@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f7f7f5">
+<title>Weekly Command Center | Batch 43</title>
+<style>
+:root{--bg:#f7f7f5;--paper:#fff;--ink:#171717;--muted:#737373;--line:#e6e6e2;--soft:#f0f0ed;--dark:#171717;--radius:18px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+button{font:inherit;cursor:pointer}.shell{max-width:1440px;margin:auto;padding:28px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:26px}.brand{display:flex;align-items:center;gap:12px}.mark{width:42px;height:42px;border:1.5px solid var(--ink);border-radius:13px;display:grid;place-items:center;font-weight:900;letter-spacing:-2px}.eyebrow{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:800}.brand h1{font-size:17px;line-height:1.2;margin:2px 0 0;letter-spacing:-.04em}.top-actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:9px 15px;font-weight:700;font-size:12px}.btn.dark{background:var(--dark);color:white;border-color:var(--dark)}.hero{display:grid;grid-template-columns:1.5fr .8fr;gap:18px;margin-bottom:18px}.hero-main,.hero-side,.panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius)}.hero-main{padding:30px;position:relative;overflow:hidden}.hero-main:after{content:"";position:absolute;width:230px;height:230px;border:1px solid #e9e9e5;border-radius:50%;right:-70px;top:-90px;box-shadow:0 0 0 25px #fafaf8,0 0 0 50px #fcfcfb}.hero-main h2{font-size:clamp(28px,4vw,48px);letter-spacing:-.06em;line-height:1.05;max-width:650px;margin:13px 0}.hero-main p{color:var(--muted);max-width:650px;margin:0}.hero-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}.chip{border:1px solid var(--line);border-radius:999px;padding:6px 11px;font-size:11px;font-weight:750;background:#fff}.hero-side{padding:24px;display:flex;flex-direction:column;justify-content:space-between}.date-label{color:var(--muted);font-size:12px;font-weight:700}.clock{font-size:32px;font-weight:850;letter-spacing:-.06em;margin:5px 0}.focusline{border-top:1px solid var(--line);padding-top:15px;margin-top:15px}.focusline strong{display:block;font-size:13px}.focusline span{font-size:12px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.stat{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:17px}.stat .num{font-size:25px;font-weight:850;letter-spacing:-.05em}.stat .lbl{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.layout{display:grid;grid-template-columns:1.35fr .8fr;gap:18px;align-items:start}.panel{padding:22px;margin-bottom:18px}.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:17px}.panel h3{margin:0;font-size:17px;letter-spacing:-.035em}.sub{font-size:12px;color:var(--muted);margin-top:3px}.weekgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}.daybtn{border:1px solid var(--line);background:#fff;border-radius:13px;padding:12px 6px;text-align:center;color:var(--ink);min-width:0}.daybtn .day{font-size:11px;font-weight:850;display:block}.daybtn .short{font-size:10px;color:var(--muted);display:block;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.daybtn.active{background:var(--dark);color:#fff;border-color:var(--dark)}.daybtn.active .short{color:#d0d0d0}.day-detail{margin-top:16px;border:1px solid var(--line);border-radius:15px;padding:17px;background:#fdfdfc}.day-detail-top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:13px}.day-detail h4{font-size:20px;letter-spacing:-.04em;margin:0}.tag{font-size:10px;font-weight:800;border:1px solid var(--line);border-radius:999px;padding:5px 9px;color:var(--muted);white-space:nowrap}.timeline{display:flex;flex-direction:column;gap:0}.slot{display:grid;grid-template-columns:22px 100px 1fr;gap:12px;padding:11px 0;border-top:1px solid var(--line)}.slot:first-child{border-top:0}.slot time{font-size:11px;font-weight:850;color:#555;padding-top:2px}.slot strong{font-size:13px;display:block}.slot p{font-size:11px;color:var(--muted);margin:2px 0 0}.slot.class strong{font-weight:850}.slot.class .event{border-left:3px solid var(--ink);padding-left:10px}.slot.prayer .event{border-left:3px solid #aaa;padding-left:10px}.slot.flex .event{border-left:3px solid #ddd;padding-left:10px}
+.timetable{overflow-x:auto}.timetable table{width:100%;border-collapse:separate;border-spacing:5px;min-width:700px}.timetable th{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:7px}.timetable td{background:#f7f7f5;border:1px solid var(--line);border-radius:10px;padding:9px;vertical-align:top;min-width:88px;height:66px}.timetable td.has{background:#fff;border-color:#bdbdb8}.timetable .course{font-size:10px;font-weight:850;line-height:1.3}.timetable .time{font-size:9px;color:var(--muted);margin-top:4px}.timetable .empty{font-size:10px;color:#c4c4be}
+.tasklist{display:flex;flex-direction:column;gap:9px}.task{display:flex;gap:10px;align-items:flex-start;padding:11px;border:1px solid var(--line);border-radius:12px;background:#fff}.task input{width:17px;height:17px;margin:2px 0 0;accent-color:#171717;flex:none}.task label{font-size:12px;font-weight:700;cursor:pointer}.task small{display:block;font-size:10px;color:var(--muted);font-weight:500;margin-top:2px}.task.done label{text-decoration:line-through;color:#999}.progress{height:7px;background:#ededeb;border-radius:99px;overflow:hidden;margin:12px 0 5px}.progress>span{display:block;height:100%;background:#171717;width:0;transition:width .2s}.progress-note{font-size:10px;color:var(--muted)}
+.prayer-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.prayer-grid .prayer{border:1px solid var(--line);border-radius:11px;padding:10px 5px;text-align:center;background:#fff}.prayer input{accent-color:#171717}.prayer label{display:block;font-size:10px;font-weight:800;margin-top:4px}.note{font-size:11px;color:var(--muted);margin-top:12px;line-height:1.5}
+.principles{display:grid;grid-template-columns:1fr 1fr;gap:8px}.principle{background:#f7f7f5;border:1px solid var(--line);border-radius:12px;padding:12px}.principle strong{font-size:12px;display:block}.principle span{font-size:10px;color:var(--muted)}
+.footer{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:10px;padding:8px 3px 20px}.hidden{display:none}
+@media(max-width:950px){.hero,.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.shell{padding:14px}.topbar{align-items:flex-start}.hero-main{padding:23px}.hero-side{padding:18px}.weekgrid{grid-template-columns:repeat(4,1fr)}.panel{padding:16px}.slot{grid-template-columns:22px 82px 1fr}.prayer-grid{grid-template-columns:repeat(5,1fr)}.footer{flex-direction:column}}
+@media print{body{background:white}.shell{max-width:none;padding:0}.top-actions,.weekgrid,.task input,.prayer input{display:none!important}.hero-main,.hero-side,.panel,.stat{break-inside:avoid;box-shadow:none}.layout{grid-template-columns:1fr 1fr}.day-detail{display:block}.footer{display:none}}
+
+html{background:var(--bg);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.field{width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;font:inherit;font-size:12px;color:var(--ink);outline:none;resize:vertical;margin-top:8px}.field:focus{border-color:var(--ink)}
+.addrow{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}.addrow .field{flex:1;min-width:110px;width:auto;margin-top:0}
+.datenav{display:flex;gap:6px;margin-bottom:12px}.datenav #goToday{flex:1}.btn:disabled{opacity:.35;cursor:default}
+.task .x{margin-left:auto;border:0;background:none;color:#aaa;font-size:14px;padding:0 4px;line-height:1}.task .x:hover{color:var(--ink)}.task.over small{color:var(--ink);font-weight:800}
+.weekbars{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}.wb{border:1px solid var(--line);border-radius:13px;padding:10px 4px;text-align:center;background:#fff;cursor:pointer;min-width:0}.wb .bar{height:84px;background:#f0f0ed;border-radius:8px;position:relative;overflow:hidden;margin-bottom:8px}.wb .bar span{position:absolute;left:0;right:0;bottom:0;background:var(--ink)}.wb b{display:block;font-size:11px}.wb small{display:block;font-size:10px;color:var(--muted)}.wb.now b:after{content:" •"}.wb.fut{opacity:.45}.wb.sel{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.logrow{padding:11px;border:1px solid var(--line);border-radius:12px;background:#fff;margin-bottom:9px}.logrow .top{display:flex;justify-content:space-between;font-size:12px;font-weight:700}.logrow .top span{color:var(--muted);font-weight:600}.logbtns{display:flex;gap:6px;flex-wrap:wrap}.logbtns .btn{padding:6px 11px}
+.daybtn.today .day:after{content:" •"}.dlsel{flex:none!important;min-width:0!important}
+@media(max-width:600px){.weekbars{gap:4px}.wb .bar{height:60px}.wb small{font-size:9px}}
+
+.slot input{width:17px;height:17px;margin:1px 0 0;accent-color:#171717;cursor:pointer}.slot.done strong{text-decoration:line-through;color:#999}.slot.done p{opacity:.55}
+.hist{width:100%;border-collapse:collapse;font-size:11px;min-width:480px}.hist th{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:left;padding:6px}.hist td{border-top:1px solid var(--line);padding:8px 6px;white-space:nowrap}.hist tbody tr{cursor:pointer}.hist tbody tr.sel td{background:#f0f0ed}
+.hrow{display:flex;gap:10px;font-size:12px;padding:6px 0;border-top:1px solid var(--line)}.hrow span:first-child{width:14px;flex:none}.hrow.ok{font-weight:700}.hrow.no{color:#999}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="topbar">
+  <div class="brand"><div class="mark">43</div><div><div class="eyebrow">Department of Software Engineering</div><h1>WEEKLY COMMAND CENTER</h1></div></div>
+  <div class="top-actions"><button class="btn" onclick="window.print()">Print / Save PDF</button><button class="btn dark" id="resetBtn">Reset checks</button></div>
+</header>
+
+<section class="hero">
+ <div class="hero-main"><div class="eyebrow">Your week · Saturday to Friday</div><h2>Study with purpose.<br>Build with consistency.</h2><p>A realistic weekly system for university classes, focused study, salah, cooking, rest and cybersecurity skill development. Follow the structure, not the clock blindly.</p>
+ <div class="hero-meta"><span class="chip">BATCH 43 · SECTION C</span><span class="chip">MINIMAL WEEKLY PLAN</span><span class="chip">ONE STEP AT A TIME</span></div></div>
+ <div class="hero-side"><div><div class="date-label" id="todayLabel">YOUR LOCAL TIME</div><div class="clock" id="clock">--:--</div><div class="date-label" id="dateLabel">Bangladesh · UTC+6</div></div><div class="focusline"><strong id="todayFocus">Choose a day to view your plan</strong><span id="todayHint">Your selected daily schedule appears below.</span></div></div>
+</section>
+
+<section class="stats">
+ <div class="stat"><div class="num" id="s1">0%</div><div class="lbl">Today's progress</div></div>
+ <div class="stat"><div class="num" id="s2">0</div><div class="lbl">Day streak</div></div>
+ <div class="stat"><div class="num" id="s3">0%</div><div class="lbl">Week average</div></div>
+ <div class="stat"><div class="num" id="s4">0m</div><div class="lbl">Study + skill today</div></div>
+</section>
+
+<div class="layout">
+ <main>
+  <section class="panel">
+   <div class="panel-head"><div><h3>Daily strategic plan</h3><div class="sub">Tick each block as you finish it. Select a day to open its routine.</div></div><span class="tag">SAT — FRI</span></div>
+   <div class="weekgrid" id="dayButtons"></div>
+   <div class="day-detail"><div class="day-detail-top"><div><div class="eyebrow" id="dayEyebrow">SELECTED DAY</div><h4 id="dayTitle">Saturday</h4><div class="sub" id="dayFocus"></div></div><span style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><span class="tag" id="blockCount"></span><span class="tag" id="dayType">CLASS DAY</span></span></div><div class="timeline" id="timeline"></div></div>
+  </section>
+
+  <section class="panel">
+   <div class="panel-head"><div><h3>Weekly monitor</h3><div class="sub">Saturday to Friday. Bars show day score (schedule blocks + checklist). Tap a day to open it.</div></div><span class="tag" id="weekTag">0%</span></div>
+   <div class="weekbars" id="weekBars"></div>
+   <div class="note" id="weekNote"></div>
+  </section>
+
+  <section class="panel">
+   <div class="panel-head"><div><h3>Quizzes and deadlines</h3><div class="sub">Add anything due. Open items come first, sorted by date.</div></div><span class="tag" id="dlCount">0 open</span></div>
+   <div class="tasklist" id="dlList"></div>
+   <div class="addrow"><input class="field" id="dlTitle" placeholder="e.g. SE311 quiz 2"><select class="field dlsel" id="dlSubj"><option>Business Analysis</option><option>DCCN</option><option>Design Pattern</option><option>SQAT</option><option>Labs</option><option>Other</option></select><input class="field dlsel" type="date" id="dlDate"><button class="btn dark" id="dlAdd">Add</button></div>
+  </section>
+
+  <section class="panel">
+   <div class="panel-head"><div><h3>University class timetable</h3><div class="sub">Based on your uploaded Batch 43 · Section C routine.</div></div><span class="tag">OFFICIAL SLOTS</span></div>
+   <div class="timetable"><table><thead><tr><th>Time</th><th>Sat</th><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th></tr></thead><tbody id="classTable"></tbody></table></div>
+   <div class="note">Note: Monday 4:00–5:30 PM shows both lab entries in the uploaded routine. Confirm your assigned lab/group with the department so you attend the correct one.</div>
+  </section>
+ <section class="panel" id="history">
+   <div class="panel-head"><div><h3>Progress history</h3><div class="sub">Pick any date to see exactly what you completed, and check whether you are improving.</div></div><span class="tag" id="histTag"></span></div>
+   <div class="addrow" style="margin:0 0 14px"><input class="field dlsel" type="date" id="histDate"><button class="btn dark" id="histShow">Show this date</button><button class="btn" id="histEdit">Open and edit this day</button></div>
+   <div id="histReport"></div>
+   <div class="eyebrow" style="margin:20px 0 6px">Last 14 days · tap a row to view</div>
+   <div class="note" id="histTrend" style="margin:0 0 8px"></div>
+   <div style="overflow-x:auto"><table class="hist"><thead><tr><th>Date</th><th>Plan</th><th>Tasks</th><th>Salah</th><th>Study</th><th>Skill</th><th>Score</th></tr></thead><tbody id="histRows"></tbody></table></div>
+  </section>
+ </main>
+
+ <aside>
+  <section class="panel">
+   <div class="panel-head"><div><h3>Daily execution checklist</h3><div class="sub">Saved in this browser. Add your own tasks below.</div></div><span class="tag" id="checkCount">0 / 6</span></div>
+   <div class="datenav"><button class="btn" id="prevDay" title="Previous day">‹</button><button class="btn" id="goToday"><span id="curLabel"></span></button><button class="btn" id="nextDay" title="Next day">›</button></div>
+   <div class="tasklist" id="taskList"></div>
+   <div class="progress"><span id="progressBar"></span></div><div class="progress-note" id="progressText">0% completed</div>
+   <div class="addrow"><input class="field" id="newTask" placeholder="Add your own task"><button class="btn dark" id="addTask">Add</button></div>
+  </section>
+
+  <section class="panel">
+   <div class="panel-head"><div><h3>Focus log</h3><div class="sub">Add minutes as you work. Goals: 3h study, 45m skill.</div></div><span class="tag" id="logTotal">0m</span></div>
+   <div class="logrow"><div class="top">University study<span id="logStudy"></span></div><div class="progress"><span id="barStudy"></span></div><div class="logbtns" data-k="study"><button class="btn" data-m="15">+15m</button><button class="btn" data-m="30">+30m</button><button class="btn" data-m="60">+1h</button><button class="btn" data-m="-15">−15m</button></div></div>
+   <div class="logrow"><div class="top">Skill · Python / cybersecurity<span id="logSkill"></span></div><div class="progress"><span id="barSkill"></span></div><div class="logbtns" data-k="skill"><button class="btn" data-m="15">+15m</button><button class="btn" data-m="30">+30m</button><button class="btn" data-m="60">+1h</button><button class="btn" data-m="-15">−15m</button></div></div>
+  </section>
+
+  <section class="panel">
+   <div class="panel-head"><div><h3>Priority and notes</h3><div class="sub">One main task and a short note for the selected day.</div></div></div>
+   <input class="field" id="pri" placeholder="Most important task"><textarea class="field" id="dayNote" rows="3" placeholder="Quiz topics, what to fix tomorrow..."></textarea>
+  </section>
+
+  <section class="panel">
+   <div class="panel-head"><div><h3>Salah anchors</h3><div class="sub">A daily reminder, not fixed prayer times.</div></div><span class="tag">5 PRAYERS</span></div>
+   <div class="prayer-grid">
+    <div class="prayer"><input type="checkbox" id="p1"><label for="p1">Fajr</label></div>
+    <div class="prayer"><input type="checkbox" id="p2"><label for="p2">Dhuhr</label></div>
+    <div class="prayer"><input type="checkbox" id="p3"><label for="p3">Asr</label></div>
+    <div class="prayer"><input type="checkbox" id="p4"><label for="p4">Maghrib</label></div>
+    <div class="prayer"><input type="checkbox" id="p5"><label for="p5">Isha</label></div>
+   </div>
+   <div class="note">Prayer times change through the year. Use your local mosque's timetable or a trusted prayer-time app. On campus days, plan Dhuhr/Asr around class and travel.</div>
+  </section>
+
+  <section class="panel">
+   <div class="panel-head"><div><h3>Rules that make the plan work</h3><div class="sub">Keep these principles simple and repeatable.</div></div></div>
+   <div class="principles">
+    <div class="principle"><strong>01 · One priority</strong><span>Choose the most important university task each day.</span></div>
+    <div class="principle"><strong>02 · Active recall</strong><span>Close the notes and test what you remember.</span></div>
+    <div class="principle"><strong>03 · Protect rest</strong><span>Rest after campus; don't turn every gap into work.</span></div>
+    <div class="principle"><strong>04 · Skill consistency</strong><span>Python + cybersecurity in small focused sessions.</span></div>
+    <div class="principle"><strong>05 · Weekly reset</strong><span>Friday evening: review deadlines and next week's topics.</span></div>
+    <div class="principle"><strong>06 · Sleep matters</strong><span>Avoid letting skill work push sleep too late.</span></div>
+   </div>
+  </section>
+ <section class="panel">
+   <div class="panel-head"><div><h3>Backup</h3><div class="sub">Data lives only in this browser. Copy the text to keep a backup or move to another device.</div></div></div>
+   <textarea class="field" id="bk" rows="3" placeholder="Backup text appears here. Paste a backup here to restore."></textarea>
+   <div class="addrow"><button class="btn" id="bkShow">Show backup</button><button class="btn dark" id="bkRestore">Restore from text</button></div>
+   <div class="note" id="bkMsg"></div>
+  </section>
+ </aside>
+</div>
+<footer class="footer"><span>PERSONAL ROUTINE · BATCH 43 · SECTION C</span><span>Built for consistency, balance and barakah.</span></footer>
+</div>
+<script>
+const TODAY=["sun","mon","tue","wed","thu","fri","sat"][new Date().getDay()];
+const days=[
+{key:"sat",name:"Saturday",short:"Business Analysis",type:"Morning classes",focus:"Attend both morning classes, then protect the evening study block.",slots:[
+["7:30–8:20 AM","Wake up, freshen up, breakfast and get ready","Start calmly; keep your bag and class materials ready.","flex"],
+["8:20–8:30 AM","Travel / reach campus","Adjust this block to your actual commute time.","flex"],
+["8:30–11:30 AM","Business Analysis & Communication","Two consecutive class slots: 8:30–10:00 and 10:00–11:30.","class"],
+["11:30 AM–1:00 PM","Campus buffer, Dhuhr and academic admin","Pray on campus if the time enters; check notices and class tasks.","prayer"],
+["1:00–3:00 PM","Return home, lunch and cooking if needed","Keep this as a flexible meal and travel window.","flex"],
+["3:00–Asr","Rest / nap / light phone time","Take a real break; set an alarm so the evening stays protected.","flex"],
+["Asr–Maghrib","Asr, personal time and reset","Prayer times vary; leave a little space before Maghrib.","prayer"],
+["After Maghrib–10:00 PM","University deep study","Quiz preparation, assignments, lecture revision and problem practice.","class"],
+["10:00–11:15 PM","Cybersecurity + Python","Focused learning or hands-on lab; stop earlier if tired.","flex"],
+["11:15 PM onward","Wind down and sleep","Prepare Sunday's essentials; aim for enough sleep.","flex"]
+]},
+{key:"sun",name:"Sunday",short:"DCCN",type:"Afternoon class",focus:"Prepare at home, attend DCCN, then use a compact night study session.",slots:[
+["10:00–11:00 AM","Wake up, freshen up and breakfast","A slower start; avoid losing the whole morning to scrolling.","flex"],
+["11:00 AM–2:00 PM","Cooking, meals and get ready","Finish lunch, pack your bag and check DCCN topics.","flex"],
+["2:00–2:30 PM","Travel to campus","Keep commute time adjustable.","flex"],
+["2:30–4:00 PM","Data Communication & Computer Networking","SE225 · Room 1415B (from the routine).","class"],
+["4:00–7:00 PM","Campus buffer, prayer and return home","Use the time for prayer, library/academic admin or commute as needed.","prayer"],
+["7:00–9:00 PM","Freshen up, dinner and rest","Recover after campus before studying.","flex"],
+["9:00–11:15 PM","University study block","Revise DCCN and complete urgent coursework / quiz preparation.","class"],
+["11:15 PM–12:00 AM","Skill / project development","Python, cybersecurity or one small project task.","flex"],
+["12:00 AM onward","Wind down and sleep","Set Monday's first priority before bed.","flex"]
+]},
+{key:"mon",name:"Monday",short:"Design Pattern + labs",type:"Long campus day",focus:"Prepare before campus; use the evening for recovery and focused study.",slots:[
+["9:00–10:00 AM","Wake up and morning routine","Freshen up, breakfast and check the day's class/lab requirements.","flex"],
+["10:00 AM–12:15 PM","Cooking, lunch and get ready","Pack food/water if useful; keep a little travel buffer.","flex"],
+["12:15–1:00 PM","Travel to campus","Adjust according to your commute.","flex"],
+["1:00–2:30 PM","Design Pattern","SE311 · Room Annex-308.","class"],
+["2:30–4:00 PM","Break, prayer and lab preparation","Use the gap for Asr if its time has entered, otherwise follow local prayer time.","prayer"],
+["4:00–5:30 PM","Scheduled lab slot","Routine lists SE313 SQAT Lab and SE226 DCCN Lab at this same time; confirm your assigned group/section.","class"],
+["5:30–7:00 PM","Return home","Travel and decompress; avoid scheduling heavy work here.","flex"],
+["7:00–9:00 PM","Freshen up, dinner and rest","Recover and take care of food / personal tasks.","flex"],
+["9:00–11:15 PM","University study block","Review Design Pattern + lab work; prepare the next class/quiz.","class"],
+["11:15 PM–12:00 AM","Skill / project development","Python or cybersecurity practice; keep it light on long campus days.","flex"]
+]},
+{key:"tue",name:"Tuesday",short:"Off day",type:"Flexible recovery + study",focus:"Use the free day intentionally without making it feel like another campus day.",slots:[
+["10:00–11:00 AM","Wake up and morning routine","Sleep enough; start without rushing.","flex"],
+["11:00 AM–2:00 PM","Cooking, meals and personal tasks","Laundry, room reset, groceries or errands if needed.","flex"],
+["2:00–6:00 PM","Open personal time","Rest, laptop, movie, phone or personal work. No guilt if priorities are done.","flex"],
+["Prayer times","Salah and short breaks","Pause whatever you're doing and follow local prayer times.","prayer"],
+["6:00–8:00 PM","University deep study · Session 1","Start with the hardest upcoming topic or assignment.","class"],
+["8:00–8:30 PM","Dinner / break","Step away from the screen.","flex"],
+["8:30–10:30 PM","University study · Session 2","Practice questions, active recall and finish pending work.","class"],
+["10:30–11:30 PM","Cybersecurity / Python","One focused lesson or lab; write a short learning note.","flex"],
+["11:30 PM onward","Wind down and sleep","Keep Wednesday's class preparation ready.","flex"]
+]},
+{key:"wed",name:"Wednesday",short:"Labs + SQAT",type:"Campus day",focus:"Attend the three scheduled sessions and keep the night study block focused.",slots:[
+["9:00–10:00 AM","Wake up and morning routine","Freshen up, breakfast and prepare your lab materials.","flex"],
+["10:00–11:00 AM","Lunch prep / early meal and get ready","Pack essentials and leave a commute buffer.","flex"],
+["11:00–11:30 AM","Travel to campus","Arrive before the first lab.","flex"],
+["11:30 AM–1:00 PM","Lab C2 · Software Quality Assurance & Testing Lab","SE313 · Room AB3-106.","class"],
+["1:00–2:30 PM","Dhuhr, lunch and break","Pray according to local time; eat and prepare for the next session.","prayer"],
+["2:30–4:00 PM","Lab C1 · Data Communication & Networking Lab","SE226 · Room 710.","class"],
+["4:00–5:30 PM","Software Quality Assurance & Testing","SE312 · Room 712A.","class"],
+["5:30–7:00 PM","Return home","Travel and decompress.","flex"],
+["7:00–9:00 PM","Freshen up, dinner and rest","Take a proper break after the long campus day.","flex"],
+["9:00–11:00 PM","University study block","Review lab observations and SQAT lecture; complete urgent tasks.","class"],
+["11:00–11:45 PM","Skill / project development","Short Python or cybersecurity practice session.","flex"]
+]},
+{key:"thu",name:"Thursday",short:"Design Pattern + DCCN",type:"Afternoon classes",focus:"Complete the two classes, then revise both subjects at night.",slots:[
+["9:00–10:00 AM","Wake up and morning routine","Freshen up, breakfast and plan the day's priority.","flex"],
+["10:00 AM–12:00 PM","Cooking, meal and get ready","Finish lunch and pack class materials.","flex"],
+["12:00–1:00 PM","Travel / Dhuhr buffer","Pray at home or campus depending on local time and commute.","prayer"],
+["1:00–2:30 PM","Design Pattern","SE311 · Room 1415A.","class"],
+["2:30–4:00 PM","Data Communication & Computer Networking","SE225 · Room 1415B.","class"],
+["4:00–6:00 PM","Return home","Travel; include Asr according to local prayer time.","prayer"],
+["6:00–8:30 PM","Freshen up, food and rest","Cook if necessary, eat and reset.","flex"],
+["8:30–11:30 PM","University study block","Revise Design Pattern + DCCN; solve practice questions.","class"],
+["11:30 PM–12:15 AM","Skill development","Python / cybersecurity or project work.","flex"]
+]},
+{key:"fri",name:"Friday",short:"Jumu'ah + reset",type:"Weekly reset day",focus:"Keep Jumu'ah and rest protected; use the evening for a weekly academic reset.",slots:[
+["10:00 AM–12:30 PM","Wake up, cooking, shower and get ready","Prepare calmly and leave enough time to reach the mosque.","flex"],
+["Jumu'ah time","Jumu'ah prayer","Follow the local mosque's actual khutbah and prayer schedule.","prayer"],
+["After Jumu'ah–2:30 PM","Lunch and return home","Eat and take care of any household needs.","flex"],
+["2:30–Asr","Rest / nap / phone time","Keep this as recovery time after the week.","flex"],
+["Asr–Maghrib","Salah and personal reset","Prayer times vary; don't lock these to a fixed clock time.","prayer"],
+["After Maghrib–8:00 PM","University study or skill development","Choose one: clear urgent coursework or do a cybersecurity/Python session.","class"],
+["8:00–9:00 PM","Dinner and break","Relax away from study for a while.","flex"],
+["9:00–10:30 PM","Weekly review and next-week planning","Check deadlines, quizzes, class notes and prepare Saturday's bag.","class"],
+["10:30 PM onward","Free time and sleep","Finish the week calmly and protect sleep.","flex"]
+]}
+];
+const dayButtons=document.getElementById("dayButtons"),timeline=document.getElementById("timeline");
+function renderDay(key){
+ const d=days.find(x=>x.key===key)||days[0];
+ document.querySelectorAll(".daybtn").forEach(b=>b.classList.toggle("active",b.dataset.key===d.key));
+ document.getElementById("dayTitle").textContent=d.name;
+ document.getElementById("dayType").textContent=d.type.toUpperCase();
+ document.getElementById("dayFocus").textContent=d.focus;
+ 
+ const sd=peek(cur).s;document.getElementById("blockCount").textContent=sd.filter(i=>i<d.slots.length).length+" / "+d.slots.length+" blocks";timeline.innerHTML=d.slots.map((s,i)=>{const on=sd.includes(i);return `<div class="slot ${s[3]}${on?" done":""}"><input type="checkbox" data-slot="${i}" id="sl${i}"${on?" checked":""} title="Mark done"><time>${s[0]}</time><div class="event"><strong>${s[1]}</strong><p>${s[2]}</p></div></div>`}).join("");
+}
+days.forEach(d=>{const b=document.createElement("button");b.className="daybtn"+(d.key===TODAY?" today":"");b.dataset.key=d.key;b.innerHTML=`<span class="day">${d.name.slice(0,3).toUpperCase()}</span><span class="short">${d.short}</span>`;b.addEventListener("click",()=>selectDay(d.key));dayButtons.appendChild(b)});
+
+
+const rows=[
+["8:30–10:00","Business Analysis & Communication","","","","","",""],
+["10:00–11:30","Business Analysis & Communication","","","","","",""],
+["11:30–1:00","","","","","Lab C2 · SQAT Lab","",""],
+["1:00–2:30","","","Design Pattern","","","Design Pattern",""],
+["2:30–4:00","","DCCN","","","Lab C1 · DCCN Lab","DCCN",""],
+["4:00–5:30","","SQAT","SQAT Lab + DCCN Lab","","SQAT","",""]
+];
+const tbody=document.getElementById("classTable");
+rows.forEach(r=>{const tr=document.createElement("tr");r.forEach((v,i)=>{const td=document.createElement("td");if(i===0){td.innerHTML=`<div class="course">${v}</div>`}else if(v){td.className="has";td.innerHTML=`<div class="course">${v}</div><div class="time">${v.includes("Business")?"GE324 · SK":v==="DCCN"?"SE225 · AMR":v==="Design Pattern"?"SE311 · NML":v==="SQAT"?"SE312 · AUA":v.includes("C2")?"SE313 · SNM":v.includes("C1")?"SE226 · AMR": "Confirm assigned lab"}</div>`}else{td.innerHTML='<span class="empty">—</span>'}tr.appendChild(td)});tbody.appendChild(tr)});
+
+const KEY="wcc43:v2",GOOD=60,STUDY_GOAL=180,SKILL_GOAL=45,NM=["Sat","Sun","Mon","Tue","Wed","Thu","Fri"];
+const DEF=[["t1","Salah and personal care","Keep prayer times flexible and follow local adhan."],["t2","Attend classes / complete class tasks","Carry notes, ask questions and record assignments."],["t3","University deep study","Revise today's lectures and prepare upcoming quizzes."],["t4","Cooking, meals and room reset","Keep food and daily essentials ready."],["t5","Cybersecurity / Python / project work","Small consistent progress is better than occasional marathons."],["t6","Plan tomorrow and sleep on time","Prepare bag, clothes and the first task for tomorrow."]];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const dkey=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const pd=k=>{const a=k.split("-").map(Number);return new Date(a[0],a[1]-1,a[2])};
+const addDays=(k,n)=>{const d=pd(k);d.setDate(d.getDate()+n);return dkey(d)};
+const today=()=>dkey(new Date());
+const weekStart=k=>addDays(k,-((pd(k).getDay()+1)%7));
+const fmt=k=>pd(k).toLocaleDateString("en-BD",{weekday:"short",day:"numeric",month:"short"});
+const hm=m=>m>=60?Math.floor(m/60)+"h"+(m%60?" "+m%60+"m":""):m+"m";
+const blank=()=>({c:[],p:[],s:[],study:0,skill:0,pri:"",note:""});
+let S={},cur=today(),last=today(),weekAvg=0;
+try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){}
+function norm(){
+ if(!S||typeof S!=="object")S={};
+ S.tasks=Array.isArray(S.tasks)?S.tasks:DEF.map(a=>({id:a[0],t:a[1],s:a[2]}));
+ S.dl=Array.isArray(S.dl)?S.dl:[];
+ S.days=S.days&&typeof S.days==="object"?S.days:{};
+ for(const k in S.days)S.days[k]=Object.assign(blank(),S.days[k]);
+}
+norm();
+try{for(let i=localStorage.length-1;i>=0;i--){const k=localStorage.key(i),m=/^(\d{4}-\d\d-\d\d):([tp]\d)$/.exec(k||"");if(m){if(localStorage.getItem(k)==="1"){const d=day(m[1]),a=m[2][0]==="t"?d.c:d.p;if(!a.includes(m[2]))a.push(m[2])}localStorage.removeItem(k)}}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const peek=k=>S.days[k]||blank();
+function day(k){return S.days[k]||(S.days[k]=blank())}
+const pct=k=>{const n=S.tasks.length;return n?Math.round(S.tasks.filter(t=>peek(k).c.includes(t.id)).length/n*100):0};
+const DK=["sun","mon","tue","wed","thu","fri","sat"];
+const planOf=k=>days.find(d=>d.key===DK[pd(k).getDay()]);
+const planPct=k=>{const n=planOf(k).slots.length;return Math.round(peek(k).s.filter(i=>i<n).length/n*100)};
+const score=k=>Math.round((pct(k)+planPct(k))/2);
+function streak(){let n=0,k=today();if(score(k)<GOOD)k=addDays(k,-1);while(score(k)>=GOOD){n++;k=addDays(k,-1)}return n}
+
+function renderCur(){
+ const d=peek(cur),t=today();renderDay(DK[pd(cur).getDay()]);$("dayEyebrow").textContent=fmt(cur).toUpperCase();
+ $("curLabel").textContent=(cur===t?"Today · ":cur===addDays(t,-1)?"Yesterday · ":"")+fmt(cur);
+ $("nextDay").disabled=cur>=t;
+ $("taskList").innerHTML=S.tasks.map(x=>{const on=d.c.includes(x.id);return `<div class="task${on?" done":""}"><input type="checkbox" id="c_${x.id}" data-id="${x.id}"${on?" checked":""}><label for="c_${x.id}">${esc(x.t)}${x.s?"<small>"+esc(x.s)+"</small>":""}</label>${x.u?`<button class="x" data-del="${x.id}" title="Remove task">✕</button>`:""}</div>`}).join("")||'<div class="note">No tasks yet. Add one below.</div>';
+ const done=S.tasks.filter(x=>d.c.includes(x.id)).length,p=pct(cur);
+ $("checkCount").textContent=done+" / "+S.tasks.length;
+ $("progressBar").style.width=p+"%";$("progressText").textContent=p+"% of daily checklist completed";
+ for(let i=1;i<=5;i++)$("p"+i).checked=d.p.includes("p"+i);
+ $("pri").value=d.pri;$("dayNote").value=d.note;
+ $("logStudy").textContent=hm(d.study)+" / "+hm(STUDY_GOAL);$("logSkill").textContent=hm(d.skill)+" / "+hm(SKILL_GOAL);
+ $("barStudy").style.width=Math.min(100,d.study/STUDY_GOAL*100)+"%";$("barSkill").style.width=Math.min(100,d.skill/SKILL_GOAL*100)+"%";
+ $("logTotal").textContent=hm(d.study+d.skill);
+}
+function renderWeek(){
+ const t=today(),ws=weekStart(t);let sum=0,cnt=0,st=0,sk=0,pr=0,h="";
+ for(let i=0;i<7;i++){const k=addDays(ws,i),d=peek(k),p=score(k),fut=k>t;if(!fut){sum+=p;cnt++}st+=d.study;sk+=d.skill;pr+=d.p.length;
+  h+=`<div class="wb${k===t?" now":""}${fut?" fut":""}${k===cur?" sel":""}" data-k="${k}"><div class="bar"><span style="height:${p}%"></span></div><b>${NM[i]}</b><small>${p}%</small><small>plan ${planPct(k)}%</small><small>${d.p.length}/5 salah</small><small>${hm(d.study+d.skill)}</small></div>`}
+ weekAvg=Math.round(sum/cnt);
+ $("weekBars").innerHTML=h;$("weekTag").textContent=weekAvg+"% AVG";
+ $("weekNote").textContent="This week: study "+hm(st)+" · skill "+hm(sk)+" · salah "+pr+"/"+(5*cnt)+" so far. Day score = average of schedule blocks and checklist; a streak day needs "+GOOD+"% or more.";
+}
+function renderStats(){const t=today(),d=peek(t);$("s1").textContent=score(t)+"%";$("s2").textContent=streak();$("s3").textContent=weekAvg+"%";$("s4").textContent=hm(d.study+d.skill)}
+function renderDl(){
+ const t=today(),L=[...S.dl].sort((a,b)=>(a.done-b.done)||((a.date||"9999").localeCompare(b.date||"9999")));
+ $("dlCount").textContent=S.dl.filter(x=>!x.done).length+" open";
+ $("dlList").innerHTML=L.map(x=>{const n=x.date?Math.round((pd(x.date)-pd(t))/864e5):null;
+  const when=x.date?fmt(x.date)+" · "+(n<0?Math.abs(n)+" day"+(n<-1?"s":"")+" overdue":n===0?"due today":n===1?"tomorrow":"in "+n+" days"):"No date";
+  return `<div class="task${x.done?" done":""}${n!==null&&n<0&&!x.done?" over":""}"><input type="checkbox" id="dl_${x.id}" data-dl="${x.id}"${x.done?" checked":""}><label for="dl_${x.id}">${esc(x.t)}<small>${esc(x.s)} · ${when}</small></label><button class="x" data-dx="${x.id}" title="Remove">✕</button></div>`}).join("")||'<div class="note">Nothing due. Add quizzes, assignments and lab reports here.</div>';
+}
+function renderAll(){renderCur();renderWeek();renderStats();renderDl();renderHist()}
+
+$("taskList").addEventListener("change",e=>{const id=e.target.dataset.id;if(!id)return;const c=day(cur).c,i=c.indexOf(id);i<0?c.push(id):c.splice(i,1);save();renderAll()});
+$("taskList").addEventListener("click",e=>{const id=e.target.dataset.del;if(!id)return;S.tasks=S.tasks.filter(x=>x.id!==id);save();renderAll()});
+function addTask(){const v=$("newTask").value.trim();if(!v)return;S.tasks.push({id:"u"+Date.now().toString(36),t:v,s:"",u:1});$("newTask").value="";save();renderAll()}
+$("addTask").onclick=addTask;$("newTask").addEventListener("keydown",e=>{if(e.key==="Enter")addTask()});
+for(let i=1;i<=5;i++)$("p"+i).addEventListener("change",e=>{const a=day(cur).p,id="p"+i,j=a.indexOf(id);e.target.checked?(j<0&&a.push(id)):(j>=0&&a.splice(j,1));save();renderWeek();renderStats()});
+document.querySelectorAll(".logbtns").forEach(b=>b.addEventListener("click",e=>{const m=+e.target.dataset.m;if(!m)return;const d=day(cur),k=b.dataset.k;d[k]=Math.max(0,d[k]+m);save();renderAll()}));
+$("pri").addEventListener("input",e=>{day(cur).pri=e.target.value;save()});
+$("dayNote").addEventListener("input",e=>{day(cur).note=e.target.value;save()});
+$("prevDay").onclick=()=>{cur=addDays(cur,-1);renderAll()};
+$("nextDay").onclick=()=>{if(cur<today()){cur=addDays(cur,1);renderAll()}};
+$("goToday").onclick=()=>{cur=today();renderAll()};
+$("weekBars").addEventListener("click",e=>{const w=e.target.closest(".wb");if(!w)return;cur=w.dataset.k;renderAll()});
+$("resetBtn").onclick=()=>{const d=day(cur);d.c=[];d.p=[];d.s=[];save();renderAll()};
+function addDl(){const v=$("dlTitle").value.trim();if(!v)return;S.dl.push({id:"d"+Date.now().toString(36),t:v,s:$("dlSubj").value,date:$("dlDate").value,done:false});$("dlTitle").value="";$("dlDate").value="";save();renderDl()}
+$("dlAdd").onclick=addDl;$("dlTitle").addEventListener("keydown",e=>{if(e.key==="Enter")addDl()});
+$("dlList").addEventListener("change",e=>{const id=e.target.dataset.dl;if(!id)return;const x=S.dl.find(y=>y.id===id);if(x){x.done=e.target.checked;save();renderDl()}});
+$("dlList").addEventListener("click",e=>{const id=e.target.dataset.dx;if(!id)return;S.dl=S.dl.filter(x=>x.id!==id);save();renderDl()});
+let hk=today();
+function histReport(k){
+ const d=peek(k),pl=planOf(k),n=pl.slots.length,sc=score(k);
+ const rows=a=>a.map(r=>`<div class="hrow ${r[0]?"ok":"no"}"><span>${r[0]?"✓":"–"}</span><span>${r[1]}</span></div>`).join("");
+ const blocks=pl.slots.map((x,i)=>[d.s.includes(i),esc(x[0])+" · "+esc(x[1])]);
+ const tasks=S.tasks.map(x=>[d.c.includes(x.id),esc(x.t)]);
+ const any=d.s.length||d.c.length||d.p.length||d.study||d.skill||d.pri||d.note;
+ return `<div class="day-detail"><div class="day-detail-top"><div><div class="eyebrow">${pl.name.toUpperCase()}</div><h4>${fmt(k)}</h4></div><span class="tag">SCORE ${sc}%</span></div>
+ <div class="hero-meta" style="margin:0 0 12px"><span class="chip">Plan ${d.s.filter(i=>i<n).length}/${n}</span><span class="chip">Tasks ${tasks.filter(r=>r[0]).length}/${tasks.length}</span><span class="chip">Salah ${d.p.length}/5</span><span class="chip">Study ${hm(d.study)}</span><span class="chip">Skill ${hm(d.skill)}</span></div>
+ ${any?"":'<div class="note">Nothing was recorded on this date.</div>'}
+ ${d.pri?`<div class="note"><b>Priority:</b> ${esc(d.pri)}</div>`:""}${d.note?`<div class="note"><b>Note:</b> ${esc(d.note)}</div>`:""}
+ <div class="eyebrow" style="margin:14px 0 4px">Schedule blocks</div>${rows(blocks)}
+ <div class="eyebrow" style="margin:14px 0 4px">Checklist</div>${rows(tasks)}</div>`;
+}
+function renderHist(){
+ const t=today();
+ $("histDate").value=hk;$("histReport").innerHTML=histReport(hk);
+ const avg=(from,n)=>{let x=0;for(let i=0;i<n;i++)x+=score(addDays(from,-i));return Math.round(x/n)};
+ const a=avg(t,7),b=avg(addDays(t,-7),7),df=a-b;
+ $("histTag").textContent=(df>0?"▲ +":df<0?"▼ ":"● ")+df+"% vs last week";
+ $("histTrend").textContent="Last 7 days average "+a+"% · previous 7 days "+b+"% · "+(df>0?"improving":df<0?"slipping":"steady")+".";
+ let h="";for(let i=0;i<14;i++){const k=addDays(t,-i),d=peek(k);h+=`<tr data-k="${k}"${k===hk?' class="sel"':""}><td>${fmt(k)}</td><td>${planPct(k)}%</td><td>${pct(k)}%</td><td>${d.p.length}/5</td><td>${hm(d.study)}</td><td>${hm(d.skill)}</td><td><b>${score(k)}%</b></td></tr>`}
+ $("histRows").innerHTML=h;
+}
+$("histShow").onclick=()=>{hk=$("histDate").value||today();renderHist()};
+$("histDate").addEventListener("change",()=>{hk=$("histDate").value||today();renderHist()});
+$("histEdit").onclick=()=>{cur=hk;renderAll();try{window.scrollTo({top:0,behavior:"smooth"})}catch(e){}};
+$("histRows").addEventListener("click",e=>{const r=e.target.closest("tr");if(!r)return;hk=r.dataset.k;renderHist()});
+function selectDay(key){cur=addDays(weekStart(cur),(DK.indexOf(key)+1)%7);renderAll()}
+timeline.addEventListener("change",e=>{const i=e.target.dataset.slot;if(i===undefined)return;const a=day(cur).s,n=+i,j=a.indexOf(n);j<0?a.push(n):a.splice(j,1);save();renderAll()});
+$("bkShow").onclick=()=>{$("bk").value=JSON.stringify(S);$("bk").select();$("bkMsg").textContent="Copy this text and keep it somewhere safe."};
+$("bkRestore").onclick=()=>{try{const o=JSON.parse($("bk").value);if(!o||!Array.isArray(o.tasks)||typeof o.days!=="object")throw 0;S=o;norm();save();renderAll();$("bkMsg").textContent="Backup restored."}catch(e){$("bkMsg").textContent="That text is not a valid backup."}};
+
+const T=days.find(x=>x.key===TODAY);$("todayFocus").textContent=T.name+" · "+T.type;$("todayHint").textContent=T.focus;
+function tick(){const d=new Date();$("clock").textContent=d.toLocaleTimeString("en-BD",{hour:"2-digit",minute:"2-digit",hour12:true});$("dateLabel").textContent=d.toLocaleDateString("en-BD",{weekday:"long",day:"numeric",month:"long",year:"numeric"})+" · Bangladesh";$("todayLabel").textContent="YOUR LOCAL TIME · UTC+6";
+ if(today()!==last){if(cur===last)cur=today();last=today();renderAll()}}
+save();renderAll();tick();setInterval(tick,30000);
+</script>
+</body>
+</html>
