@@ -34,6 +34,12 @@ html{background:var(--bg);padding-top:env(safe-area-inset-top,0px);padding-botto
 .slot input{width:17px;height:17px;margin:1px 0 0;accent-color:#171717;cursor:pointer}.slot.done strong{text-decoration:line-through;color:#999}.slot.done p{opacity:.55}
 .hist{width:100%;border-collapse:collapse;font-size:11px;min-width:480px}.hist th{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:left;padding:6px}.hist td{border-top:1px solid var(--line);padding:8px 6px;white-space:nowrap}.hist tbody tr{cursor:pointer}.hist tbody tr.sel td{background:#f0f0ed}
 .hrow{display:flex;gap:10px;font-size:12px;padding:6px 0;border-top:1px solid var(--line)}.hrow span:first-child{width:14px;flex:none}.hrow.ok{font-weight:700}.hrow.no{color:#999}
+
+main,aside,.panel{min-width:0}.layout{grid-template-columns:minmax(0,1.35fr) minmax(0,.8fr)}.weekbars{grid-template-columns:repeat(7,minmax(0,1fr))}
+.dlform{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin:0 0 14px}.dlform .field{margin-top:0;width:100%;min-width:0;flex:none}.dlform #dlTitle{grid-column:1/-1}
+.dlmsg{font-size:11px;color:var(--muted);min-height:16px;margin:-6px 0 10px}
+@media(max-width:950px){.layout{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.dlform{grid-template-columns:1fr 1fr}.dlform #dlAdd{grid-column:1/-1;padding:12px}}
 </style>
 </head>
 <body>
@@ -72,8 +78,9 @@ html{background:var(--bg);padding-top:env(safe-area-inset-top,0px);padding-botto
 
   <section class="panel">
    <div class="panel-head"><div><h3>Quizzes and deadlines</h3><div class="sub">Add anything due. Open items come first, sorted by date.</div></div><span class="tag" id="dlCount">0 open</span></div>
+   <div class="dlform"><input class="field" id="dlTitle" placeholder="e.g. SE311 quiz 2"><select class="field" id="dlSubj"><option>Business Analysis</option><option>DCCN</option><option>Design Pattern</option><option>SQAT</option><option>Labs</option><option>Other</option></select><input class="field" type="date" id="dlDate"><button class="btn dark" id="dlAdd">Add</button></div>
+   <div class="dlmsg" id="dlMsg"></div>
    <div class="tasklist" id="dlList"></div>
-   <div class="addrow"><input class="field" id="dlTitle" placeholder="e.g. SE311 quiz 2"><select class="field dlsel" id="dlSubj"><option>Business Analysis</option><option>DCCN</option><option>Design Pattern</option><option>SQAT</option><option>Labs</option><option>Other</option></select><input class="field dlsel" type="date" id="dlDate"><button class="btn dark" id="dlAdd">Add</button></div>
   </section>
 
   <section class="panel">
@@ -331,7 +338,7 @@ $("nextDay").onclick=()=>{if(cur<today()){cur=addDays(cur,1);renderAll()}};
 $("goToday").onclick=()=>{cur=today();renderAll()};
 $("weekBars").addEventListener("click",e=>{const w=e.target.closest(".wb");if(!w)return;cur=w.dataset.k;renderAll()});
 $("resetBtn").onclick=()=>{const d=day(cur);d.c=[];d.p=[];d.s=[];save();renderAll()};
-function addDl(){const v=$("dlTitle").value.trim();if(!v)return;S.dl.push({id:"d"+Date.now().toString(36),t:v,s:$("dlSubj").value,date:$("dlDate").value,done:false});$("dlTitle").value="";$("dlDate").value="";save();renderDl()}
+function addDl(){const v=$("dlTitle").value.trim();if(!v){$("dlMsg").textContent="Write the quiz or deadline title first.";$("dlTitle").focus();return}$("dlMsg").textContent="Added: "+v+".";S.dl.push({id:"d"+Date.now().toString(36),t:v,s:$("dlSubj").value,date:$("dlDate").value,done:false});$("dlTitle").value="";$("dlDate").value="";save();renderDl()}
 $("dlAdd").onclick=addDl;$("dlTitle").addEventListener("keydown",e=>{if(e.key==="Enter")addDl()});
 $("dlList").addEventListener("change",e=>{const id=e.target.dataset.dl;if(!id)return;const x=S.dl.find(y=>y.id===id);if(x){x.done=e.target.checked;save();renderDl()}});
 $("dlList").addEventListener("click",e=>{const id=e.target.dataset.dx;if(!id)return;S.dl=S.dl.filter(x=>x.id!==id);save();renderDl()});
